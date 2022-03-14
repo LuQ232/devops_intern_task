@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+
+  test_db:
+    build: 
+      context: ./test_db
+    container_name: test_db_mysql
+    restart: unless-stopped
+    volumes:
+      - test_db_volume:/var/lib/mysql
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD","mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      timeout: 30s
+      retries: 5
+
+
+
+volumes:
+  test_db_volume:
